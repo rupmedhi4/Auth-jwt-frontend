@@ -9,7 +9,7 @@ const [token,setToken]= useState(null)
     const checkCookie = async () => {
       try {
         const res = await axios.post(
-          "http://localhost:5000/api/user/signup",
+          "https://auth-jwt-nnkh.onrender.com/api/user/signup",
           { name: "rup" },
           {
             withCredentials: true,
@@ -36,7 +36,7 @@ const [token,setToken]= useState(null)
   return (
     <div >
       <button onClick={clickHandler}>click me</button>
-      <h1>token ? token : no token</h1>
+      <h1>{token ? token : "no token"}</h1>
     </div>
   )
 }
