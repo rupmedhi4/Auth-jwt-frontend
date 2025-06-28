@@ -24,17 +24,19 @@ const [token,setToken]= useState(null)
     checkCookie();
   }, []); 
 
-console.log(Cookies.get('jwt') )
-
+  
   const clickHandler=()=>{
-    alert("this is click")
-    setToken("cookie")
+    const cookie =Cookies.get('jwt') 
+    
+    alert("clicking")
+    setToken(cookie)
   }
   
 
   return (
     <div >
       <button onClick={clickHandler}>click me</button>
+      <h1>token ? token : no token</h1>
     </div>
   )
 }
