@@ -1,47 +1,44 @@
+import React, { useState, useEffect } from 'react';
 import axios from 'axios';
-import React, { useEffect, useState } from 'react'
 import Cookies from 'js-cookie';
 
 export default function App() {
-const [token,setToken]= useState(null)
-const [data,setData]= useState(null)
+  const [data, setData] = useState(null);
+  const [token, setToken] = useState(null);
 
- useEffect(() => {
-    const checkCookie = async () => {
-      try {
-        const res = await axios.post(
-          "https://auth-jwt-nnkh.onrender.com/api/user/signup",
-          { name: "rup" },
-          {
-            withCredentials: true,
-          }
-        );
-        setData(res.data.name || res)
-        console.log(res);
-      } catch (error) {
-        console.error("Error while checking cookie:", error);
-      }
+  useEffect(() => {
+    const fetchData = async () => {
+      const res = await axios.post(
+        "https://auth-jwt-nnkh.onrender.com/api/user/signup",
+        { name: "rup" }
+      );
+console.log(res);
+
+      // Save token as cookie manually
+      Cookies.set("jwt", res.data.token, {
+        path: '/',
+        secure: true,
+        sameSite: 'None',
+        expires: 14
+      });
+
+      setData(res.data);
     };
 
-    checkCookie();
-  }, []); 
+    fetchData();
+  }, []);
 
-  
-  const clickHandler=()=>{
-    const cookie =Cookies.get('jwt') 
-    
-    alert("clicking")
-    setToken(cookie)
-  }
-  
+  const clickHandler = () => {
+    const cookieToken = Cookies.get("jwt");
+    setToken(cookieToken);
+  };
 
   return (
-    <div >
-      <button onClick={clickHandler}>click me</button>
-      {
-       data ? data :"no data"
-      }
-      <h1>{token ? token : "no token"}</h1>
+    <div>
+      <button onClick={clickHandler}>Get Token</button>
+      <h2>{data?.message || "No message"}</h2>
+      <h3>{data?.name || "No name"}</h3>
+      <h1>{token || "No token"}</h1>
     </div>
-  )
+  );
 }
