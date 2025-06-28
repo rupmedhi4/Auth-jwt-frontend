@@ -4,6 +4,7 @@ import Cookies from 'js-cookie';
 
 export default function App() {
 const [token,setToken]= useState(null)
+const [data,setData]= useState(null)
 
  useEffect(() => {
     const checkCookie = async () => {
@@ -15,6 +16,7 @@ const [token,setToken]= useState(null)
             withCredentials: true,
           }
         );
+        setData(res.data.name || res)
         console.log(res);
       } catch (error) {
         console.error("Error while checking cookie:", error);
@@ -36,6 +38,9 @@ const [token,setToken]= useState(null)
   return (
     <div >
       <button onClick={clickHandler}>click me</button>
+      {
+       data ? data :"no data"
+      }
       <h1>{token ? token : "no token"}</h1>
     </div>
   )
